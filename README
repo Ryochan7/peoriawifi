@@ -1,0 +1,6 @@
+The following packages are the main requirements to run this project
+using the development server:
+
+django 1.3
+django-pagination
+

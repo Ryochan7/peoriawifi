@@ -1,5 +1,8 @@
-django
+django==1.3
 django-pagination
+django-registration
+#ligeos
+#Python_GDAL
 #django-extensions
 #MySQL-python
 #django-debug-toolbar
