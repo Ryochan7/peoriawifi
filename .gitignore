@@ -1,0 +1,8 @@
+*.pyc
+*.old
+*.backup
+build/
+dist/
+local_settings.py
+*.*~
+

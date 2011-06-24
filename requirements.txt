@@ -1,0 +1,6 @@
+django
+django-pagination
+#django-extensions
+#MySQL-python
+#django-debug-toolbar
+
