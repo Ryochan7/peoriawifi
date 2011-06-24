@@ -1,6 +1,7 @@
 from django.contrib.gis import admin
 from wifi.models import Hotspot
 from wifi.conf import settings
+from wifi.forms import HotspotAdminForm
 
 # Abstract settings for possible use in future ModelAdmin classes
 class OpenlayersMixin (object):
@@ -13,6 +14,8 @@ class OpenlayersMixin (object):
     default_lon = settings.DEFAULT_LON
 
 class HotspotAdmin (OpenlayersMixin, admin.OSMGeoAdmin):
+    form = HotspotAdminForm
+
     list_display = ["name", "address", "restricted", "status", "geometry"]
     list_filter = ["restricted", "status"]
     search_fields = ["name", "address"]
@@ -21,6 +24,7 @@ class HotspotAdmin (OpenlayersMixin, admin.OSMGeoAdmin):
         ("Location", {"fields": ["geometry"]}),
         ("Publication Status", {"fields": ["status"]}),
     )
+
 
 admin.site.register (Hotspot, HotspotAdmin)
 

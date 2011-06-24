@@ -21,7 +21,7 @@ class Hotspot (models.Model):
 
     name = models.CharField (max_length=100)
     address = models.CharField (max_length=2000)
-    phone = models.CharField (max_length=20, blank=True)
+    phone = models.CharField (max_length=20, blank=True, help_text="Expected format of phone number is xxx-xxx-xxxx.<br/>Example: 309-123-4567")
     restricted = models.BooleanField (default=OPEN, choices=RESTRICTION_CHOICES, help_text="Does the hotspot require registration and payment?")
     description = models.TextField ()
     status = models.IntegerField (default=UNPUBLISHED, choices=STATUS_CHOICES)
