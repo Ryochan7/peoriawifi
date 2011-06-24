@@ -6,6 +6,8 @@ class OpenlayersMixin (object):
     map_width = 800
     map_height = 400
     openlayers_url = "/static/openlayers-2.10/OpenLayers.js"
+    default_lat = 40
+    default_lon = -95
 
 class HotspotAdmin (OpenlayersMixin, admin.GeoModelAdmin):
     pass
