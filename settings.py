@@ -108,6 +108,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'peoriawifi.urls'
@@ -129,6 +130,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     "django.contrib.gis",
+    "debug_toolbar",
     "wifi",
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
@@ -156,6 +158,9 @@ LOGGING = {
         },
     }
 }
+
+INTERNAL_IPS = ('127.0.0.1',)
+
 
 # Override settings with settings from local_settings.py if enabled
 try:

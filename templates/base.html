@@ -1,8 +1,31 @@
-<html><head><title>In this page</title></head>
-<body>
-<p>
-    You are on this page
-</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">{% comment %}{{ google_map.xhtml }}{% endcomment %}
+<head>
+<title>{% block title %}Peoria Wifi hotspots{% endblock %}</title>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/google_map.css" type="text/css" />
+{{ google_map.style }}
+{{ google_map.scripts }}
+{% block extra_js %}{% endblock %}
+{% block extra_css %}{% endblock %}
+</head>
+{% block body %}
+<body onload="{{ google_map.js_module }}.map_load (); info_windows ();" onunload="GUnload ()">
+{% endblock %}
+{% block content %}
+    <div id="{{ google_map.dom_id }}">
+    </div>
+    <p>
+        You are on this page
+    </p>
+
+    <script>
+        info_windows = function () {
+        {% for hotspot in hotspot_list %}
+            geodjango.map_marker{{ forloop.counter }}.bindInfoWindowHtml ("<h2>{{ hotspot.name }}</h2><p class=\"address\">{{ hotspot.address }}</p><p class=\"business_phone\">{{ hotspot.phone }}</p><p class=\"description\">{{ hotspot.description }}</p>");
+        {% endfor %}
+};
+    </script>
+{% endblock %}
 </body>
 </html>
 

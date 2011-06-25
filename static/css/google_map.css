@@ -1,0 +1,20 @@
+#map {
+	width: 600px;
+	height: 400px;
+}
+
+#map .address {
+	font-size: 0.75em;
+	margin-top: 0px;
+	margin-bottom: 2px;
+}
+
+#map h2 {
+	font-size: 1.25em;
+	margin: 10px 0px 6px 0px;
+}
+
+#map .business_phone {
+	font-size: 0.75em;
+	margin-top: 0px;
+}

@@ -1,5 +1,5 @@
 from django.contrib.gis import admin
-from wifi.models import Hotspot
+from wifi.models import Hotspot, State, City
 from wifi.conf import settings
 from wifi.forms import HotspotAdminForm
 
@@ -21,10 +21,17 @@ class HotspotAdmin (OpenlayersMixin, admin.OSMGeoAdmin):
     search_fields = ["name", "address"]
     fieldsets = (
         ("Hotspot Information", {"fields": ["name", "address", "phone", "description", "restricted"]}),
-        ("Location", {"fields": ["geometry"]}),
+        ("Location Information", {"fields": ["in_city", "geometry"]}),
         ("Publication Status", {"fields": ["status"]}),
     )
 
+class StateAdmin (admin.ModelAdmin):
+    pass
+
+class CityAdmin (admin.ModelAdmin):
+    pass
 
 admin.site.register (Hotspot, HotspotAdmin)
+admin.site.register (State, StateAdmin)
+admin.site.register (City, CityAdmin)
 

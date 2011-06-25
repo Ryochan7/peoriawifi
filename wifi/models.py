@@ -1,6 +1,22 @@
 #from django.db import models
 from django.contrib.gis.db import models
 
+class State (models.Model):
+    name = models.CharField (max_length=200)
+
+    def __unicode__ (self):
+        return self.name
+
+class City (models.Model):
+    name = models.CharField (max_length=200)
+    in_state = models.ForeignKey (State)
+
+    def __unicode__ (self):
+        return u"{0}, {1}".format (self.name, self.in_state.name)
+
+    class Meta (object):
+        verbose_name_plural = "Cities"
+
 class Hotspot (models.Model):
     UNPUBLISHED = 0
     PUBLISHED = 1
@@ -25,7 +41,9 @@ class Hotspot (models.Model):
     restricted = models.BooleanField (default=OPEN, choices=RESTRICTION_CHOICES, help_text="Does the hotspot require registration and payment?")
     description = models.TextField ()
     status = models.IntegerField (default=UNPUBLISHED, choices=STATUS_CHOICES)
-    geometry = models.PointField (srid=4326)
+    in_city = models.ForeignKey (City, null=True)
+    # blank and null must be used or widget validation will raise an error on blank
+    geometry = models.PointField (srid=4326, blank=True, null=True, help_text="If no point is provided, the address field will be used to find a point from Google Maps")
     objects = models.GeoManager ()
 
     def __unicode__ (self):
@@ -34,7 +52,6 @@ class Hotspot (models.Model):
     @models.permalink
     def get_absolute_url (self):
         return ("wifi_hotspot_details", (), {"hotspot_id": self.id})
-
 
 #class Zipcodes (models.Model):
 #    code = models.CharField (max_length=5)
