@@ -131,6 +131,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     "django.contrib.gis",
     "debug_toolbar",
+    "sorl.thumbnail",
+    "taggit",
+    "taggit_templatetags",
     "wifi",
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
@@ -160,7 +163,12 @@ LOGGING = {
 }
 
 INTERNAL_IPS = ('127.0.0.1',)
-
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
 
 # Override settings with settings from local_settings.py if enabled
 try:

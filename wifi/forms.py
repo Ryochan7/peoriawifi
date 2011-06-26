@@ -6,29 +6,26 @@ from wifi.models import Hotspot
 from wifi.conf import settings
 
 class HotspotAdminForm (forms.ModelForm):
-    temp_point = None
-
     class Meta (object):
         model = Hotspot
 
     def clean (self):
-        # Auto-plot point on map if not already done
-        if self.temp_point and not self.cleaned_data.get ("geometry"):
-            self.cleaned_data["geometry"] = Point (self.temp_point[1][1], self.temp_point[1][0])
+        temp_point = None
+        address = self.cleaned_data.get ("address")
+        # Attempt to auto-plot point on map if not already done
+        if address and not self.cleaned_data.get ("geometry"):
+            g = geocoders.Google (api_key=settings.settings.GOOGLE_MAPS_API_KEY)
+            try:
+                temp_point = g.geocode (self.cleaned_data["address"])
+            except ValueError as exception:
+                self._errors["address"] = self.error_class ([exception.message])
+            except geocoders.GQueryError as exception:
+                self._errors["address"] = self.error_class (["Could not find a corresponding addresss"])
+            finally:
+                if temp_point:
+                    self.cleaned_data["geometry"] = Point (temp_point[1][1], temp_point[1][0])
 
-        self.temp_point = None
         return self.cleaned_data
-
-    def clean_address (self):
-        g = geocoders.Google (api_key=settings.settings.GOOGLE_MAPS_API_KEY)
-        try:
-            self.temp_point = g.geocode (self.cleaned_data["address"])
-        except ValueError as exception:
-            raise forms.ValidationError (exception.message)
-        except geocoders.GQueryError as exception:
-            raise forms.ValidationError ("Could not find a corresponding addresss")
-        
-        return self.cleaned_data["address"]
 
     def clean_phone (self):
         # Skip if blank

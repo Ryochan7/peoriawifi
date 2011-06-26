@@ -7,7 +7,7 @@ from wifi.conf import settings
 
 class WifiIndexView (ListView):
     template_name = "base.html"
-    queryset = object_list = Hotspot.objects.all ()
+    queryset = object_list = Hotspot.objects.all ().select_related (depth=1)
 
     def get (self, request, *args, **kwargs):
         markers = []

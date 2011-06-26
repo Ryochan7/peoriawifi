@@ -1,4 +1,5 @@
 from django.contrib.gis import admin
+from sorl.thumbnail.admin import AdminImageMixin
 from wifi.models import Hotspot, State, City
 from wifi.conf import settings
 from wifi.forms import HotspotAdminForm
@@ -13,14 +14,14 @@ class OpenlayersMixin (object):
     default_lat = settings.DEFAULT_LAT
     default_lon = settings.DEFAULT_LON
 
-class HotspotAdmin (OpenlayersMixin, admin.OSMGeoAdmin):
+class HotspotAdmin (OpenlayersMixin, AdminImageMixin, admin.OSMGeoAdmin):
     form = HotspotAdminForm
 
     list_display = ["name", "address", "restricted", "status", "geometry"]
     list_filter = ["restricted", "status"]
     search_fields = ["name", "address"]
     fieldsets = (
-        ("Hotspot Information", {"fields": ["name", "address", "phone", "description", "restricted"]}),
+        ("Hotspot Information", {"fields": ["name", "address", "phone", "description", "tags", "restricted", "source_image"]}),
         ("Location Information", {"fields": ["in_city", "geometry"]}),
         ("Publication Status", {"fields": ["status"]}),
     )

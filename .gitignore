@@ -4,5 +4,7 @@
 build/
 dist/
 local_settings.py
+media/cache/
+media/hotspot_images/
 *.*~
 

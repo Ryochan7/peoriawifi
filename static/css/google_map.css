@@ -1,20 +1,48 @@
 #map {
-	width: 600px;
-	height: 400px;
+	width: 700px;
+	height: 500px;
+	font-family: arial, san-serif;
+}
+
+#map .map_info_window {
+	position: relative;
+	top: -4px;
+}
+
+#map #hotspot_name {
+	font-size: 1.25em;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#map img.hotspot_image {
+	width: 70px;
+	height: auto;
+}
+
+#map td.basic_info {
+	vertical-align: top;
+	padding: 10px 0px 0px 10px;
 }
 
 #map .address {
-	font-size: 0.75em;
+	font-size: 0.9em;
 	margin-top: 0px;
 	margin-bottom: 2px;
 }
 
-#map h2 {
-	font-size: 1.25em;
-	margin: 10px 0px 6px 0px;
+#map .business_phone {
+	font-size: 0.8em;
+	margin-top: 6px;
 }
 
-#map .business_phone {
-	font-size: 0.75em;
-	margin-top: 0px;
+#map .more_detail .tags {
+	margin: 0px;
+	font-weight: bold;
+	font-size: 0.85em;
+}
+
+#map .more_detail .description {
+	margin-top: 10px;
+	padding-bottom: 10px;
 }

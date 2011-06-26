@@ -1,27 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">{% comment %}{{ google_map.xhtml }}{% endcomment %}
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <title>{% block title %}Peoria Wifi hotspots{% endblock %}</title>
-<link rel="stylesheet" href="{{ STATIC_URL }}css/google_map.css" type="text/css" />
-{{ google_map.style }}
-{{ google_map.scripts }}
-{% block extra_js %}{% endblock %}
-{% block extra_css %}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/google_map.css" type="text/css" />
+    {{ google_map.style }}
+{% endblock %}
+{% block extra_js %}{{ google_map.scripts }}{% endblock %}
 </head>
 {% block body %}
 <body onload="{{ google_map.js_module }}.map_load (); info_windows ();" onunload="GUnload ()">
 {% endblock %}
 {% block content %}
-    <div id="{{ google_map.dom_id }}">
+   <div id="{{ google_map.dom_id }}">
     </div>
     <p>
         You are on this page
     </p>
 
+    {% load thumbnail %}
     <script>
         info_windows = function () {
         {% for hotspot in hotspot_list %}
-            geodjango.map_marker{{ forloop.counter }}.bindInfoWindowHtml ("<h2>{{ hotspot.name }}</h2><p class=\"address\">{{ hotspot.address }}</p><p class=\"business_phone\">{{ hotspot.phone }}</p><p class=\"description\">{{ hotspot.description }}</p>");
+            geodjango.map_marker{{ forloop.counter }}.bindInfoWindowHtml ("{% spaceless %}
+
+    <div class=\"map_info_window\">
+        <a id=\"hotspot_name\" href=\"{{ hotspot.get_absolute_url }}\">{{ hotspot.name }}</a>
+        <div class=\"intro_info\">
+            <table>
+                <tbody><tr><td>
+                    {% thumbnail hotspot.source_image "70x70" crop="center" as im %}
+                     <img src=\"{{ im.url }}\" alt=\"{{ hotspot.name }} image\" class=\"hotspot_image\" />
+                    {% empty %}
+                        <img src=\"{{ STATIC_URL }}images/wifi.png\" alt=\"hotspot image\" class=\"hotspot_image\" />
+                    {% endthumbnail %}
+                    </td><td class=\"basic_info\">
+                    <p class=\"address\">{{ hotspot.address }}</p>
+                    <p class=\"business_phone\">{{ hotspot.phone }}</p>
+                </td></tr></tbody>
+            </table>
+        </div>
+        <div class=\"more_detail\">
+            <div class=\"tags\">Tags: {% for tag in hotspot.tags.all %}{{ tag }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</div>
+            <div class=\"description\">{{ hotspot.description }}</div>
+        </div>
+    </div>
+
+{% endspaceless %}");
         {% endfor %}
 };
     </script>

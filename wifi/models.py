@@ -1,5 +1,7 @@
 #from django.db import models
 from django.contrib.gis.db import models
+from sorl.thumbnail import ImageField
+from taggit.managers import TaggableManager
 
 class State (models.Model):
     name = models.CharField (max_length=200)
@@ -41,7 +43,9 @@ class Hotspot (models.Model):
     restricted = models.BooleanField (default=OPEN, choices=RESTRICTION_CHOICES, help_text="Does the hotspot require registration and payment?")
     description = models.TextField ()
     status = models.IntegerField (default=UNPUBLISHED, choices=STATUS_CHOICES)
-    in_city = models.ForeignKey (City, null=True)
+    in_city = models.ForeignKey (City)
+    source_image = ImageField (upload_to="hotspot_images", max_length=256, blank=True)
+    tags = TaggableManager ()
     # blank and null must be used or widget validation will raise an error on blank
     geometry = models.PointField (srid=4326, blank=True, null=True, help_text="If no point is provided, the address field will be used to find a point from Google Maps")
     objects = models.GeoManager ()
