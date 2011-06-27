@@ -1,0 +1,39 @@
+#hotspot_list .hotspot_details {
+	font-family: arial,helvetica,sans-serif;
+}
+
+#hotspot_list .hotspot_details h2.hotspot_name a {
+	text-decoration: none;
+}
+
+#hotspot_list .hotspot_details p.hotspot_image img {
+	float: left;
+	width: 70px;
+}
+
+#hotspot_list .hotspot_details p.address {
+	margin: 0px 0px 0px 70px;
+	padding-left: 20px;
+}
+
+#hotspot_list .hotspot_details p.more_info {
+	margin-left: 70px;
+	padding-left: 20px;
+}
+
+#hotspot_list .hotspot_details p.business_phone {
+	margin: 4px 0px 0px 70px;
+	padding-left: 20px;
+	font-size: 0.9em;
+}
+
+#hotspot_list .hotspot_details p.tags {
+	clear: both;
+	font-size: 0.85em;
+	font-weight: bold;
+	padding-top: 10px;
+}
+
+#hotspot_list .hotspot_details p.description {
+	
+}

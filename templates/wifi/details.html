@@ -1,2 +1,50 @@
 {% extends "wifi/base.html" %}
 
+{% block title %}{{ hotspot.name }} Details | {{ block.super }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}css/detail.css" />
+{{ block.super }}
+{% endblock %}
+{% block body %}
+<body onload="{{ google_map.js_module }}.{{ google_map.dom_id }}_load (); customize_map ();" {{ google_maps.onunload }}>
+{% endblock %}
+
+{% block content %}
+    <div id="{{ google_map.dom_id }}" class="long_format">
+    </div>
+
+    <div id="breadcrumb">
+        <ul>
+            <li><a href="{% url home %}">Home</a></li>
+            <li>{{ hotspot.in_city }}</li>
+            <li>{{ hotspot.name }}</li>
+        </ul>
+    </div>
+    {% block page_header %}
+        <div id="page_header">
+            <h1>{{ hotspot.name }}</h1>
+        </div>
+    {% endblock %}
+
+    {% load thumbnail %}
+    <div id="info">
+        {% thumbnail hotspot.source_image "100x100" crop="center" as im %}
+            <img id="hotspot_image" src="{{ im.url }}" alt="{{ hotspot.name }} image" class="hotspot_image" />
+        {% empty %}
+            <img id="hotspot_image" src="{{ STATIC_URL }}images/wifi.png" alt="hotspot image" class="hotspot_image" />
+        {% endthumbnail %}
+
+        <p class="address">Address: {{ hotspot.address }}</p>
+        <p class="business_phone">Phone: {{ hotspot.phone }}</p>
+        <p class="wireless">Wireless: {{ hotspot.restricted|yesno:"Pay,Open,Unknown" }}</p>
+        <p class="options"><a href="http://maps.google.com/?daddr={{ hotspot.address|urlencode }}" target="new">directions</a></p>
+        <p class="tags">Tags: {% for tag in hotspot.populated_tags %}<a href="{% url wifi_hotspot_tag tag.slug %}">{{ tag }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>
+        <p class="description">{{ hotspot.description }}</p>
+    </div>
+
+    <script type="text/javascript">
+    customize_map = function () {
+        geodjango.map.setZoom (16);
+    };
+    </script>
+{% endblock %}

@@ -4,6 +4,11 @@
 	font-family: arial, san-serif;
 }
 
+#map.long_format {
+	width: 960px;
+	height: 250px;
+}
+
 #map .map_info_window {
 	position: relative;
 	top: -4px;
@@ -34,10 +39,19 @@
 #map .business_phone {
 	font-size: 0.8em;
 	margin-top: 6px;
+	margin-bottom: 4px;
+}
+
+#map .wireless {
+	font-size: 0.9em;
+}
+
+#map .more_info {
+	margin-top: 4px;
 }
 
 #map .more_detail .tags {
-	margin: 0px;
+	margin: 10px 0px 0px 0px;
 	font-weight: bold;
 	font-size: 0.85em;
 }

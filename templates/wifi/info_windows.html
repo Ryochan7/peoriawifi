@@ -1,0 +1,36 @@
+{% load thumbnail %}
+<script type="text/javascript">
+    info_windows = function () {
+    {% for hotspot in hotspot_list %}
+        geodjango.map_marker{{ forloop.counter }}.bindInfoWindowHtml ("{% spaceless %}
+
+<div class=\"map_info_window\">
+    <a id=\"hotspot_name\" href=\"{{ hotspot.get_absolute_url }}\">{{ hotspot.name }}</a>
+    <div class=\"intro_info\">
+        <table>
+            <tbody><tr><td>
+                {% thumbnail hotspot.source_image "70x70" crop="center" as im %}
+                 <img src=\"{{ im.url }}\" alt=\"{{ hotspot.name }} image\" class=\"hotspot_image\" />
+                {% empty %}
+                    <img src=\"{{ STATIC_URL }}images/wifi.png\" alt=\"hotspot image\" class=\"hotspot_image\" />
+                {% endthumbnail %}
+                </td><td class=\"basic_info\">
+                <p class=\"address\">{{ hotspot.address }}</p>
+                <p class=\"business_phone\">{{ hotspot.phone }}</p>
+                <div class=\"wireless\">Wireless: {{ hotspot.restricted|yesno:"Pay,Open,Unknown" }}</div>
+                <div class=\"more_info\">
+                    <a href=\"{{ hotspot.get_absolute_url }}\">View More Details</a>
+                </div>
+            </td></tr></tbody>
+        </table>
+    </div>
+    <div class=\"more_detail\">
+        <div class=\"tags\">Tags: {% for tag in hotspot.populated_tags %}<a href=\"{% url wifi_hotspot_tag tag.slug %}\">{{ tag }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</div>
+    </div>
+</div>
+
+{% endspaceless %}");
+    {% endfor %}
+};
+</script>
+

@@ -17,13 +17,13 @@ class OpenlayersMixin (object):
 class HotspotAdmin (OpenlayersMixin, AdminImageMixin, admin.OSMGeoAdmin):
     form = HotspotAdminForm
 
-    list_display = ["name", "address", "restricted", "status", "geometry"]
-    list_filter = ["restricted", "status"]
+    list_display = ["name", "address", "restricted", "status", "date_added", "geometry"]
+    list_filter = ["restricted", "status", "date_added"]
     search_fields = ["name", "address"]
     fieldsets = (
         ("Hotspot Information", {"fields": ["name", "address", "phone", "description", "tags", "restricted", "source_image"]}),
         ("Location Information", {"fields": ["in_city", "geometry"]}),
-        ("Publication Status", {"fields": ["status"]}),
+        ("Publication Status", {"fields": ["status", "date_added"]}),
     )
 
 class StateAdmin (admin.ModelAdmin):

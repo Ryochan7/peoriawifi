@@ -2,6 +2,7 @@
 from django.contrib.gis.db import models
 from sorl.thumbnail import ImageField
 from taggit.managers import TaggableManager
+from datetime import datetime
 
 class State (models.Model):
     name = models.CharField (max_length=200)
@@ -40,11 +41,12 @@ class Hotspot (models.Model):
     name = models.CharField (max_length=100)
     address = models.CharField (max_length=2000)
     phone = models.CharField (max_length=20, blank=True, help_text="Expected format of phone number is xxx-xxx-xxxx.<br/>Example: 309-123-4567")
-    restricted = models.BooleanField (default=OPEN, choices=RESTRICTION_CHOICES, help_text="Does the hotspot require registration and payment?")
+    restricted = models.BooleanField (default=OPEN, help_text="Does the hotspot require registration and payment?")
     description = models.TextField ()
     status = models.IntegerField (default=UNPUBLISHED, choices=STATUS_CHOICES)
     in_city = models.ForeignKey (City)
     source_image = ImageField (upload_to="hotspot_images", max_length=256, blank=True)
+    date_added = models.DateTimeField (default=datetime.now)
     tags = TaggableManager ()
     # blank and null must be used or widget validation will raise an error on blank
     geometry = models.PointField (srid=4326, blank=True, null=True, help_text="If no point is provided, the address field will be used to find a point from Google Maps")
@@ -55,7 +57,14 @@ class Hotspot (models.Model):
 
     @models.permalink
     def get_absolute_url (self):
-        return ("wifi_hotspot_details", (), {"hotspot_id": self.id})
+        return ("wifi_hotspot_details", (), {"pk": self.id})
+
+    @property
+    def populated_tags (self):
+        if not getattr (self, "current_tags", None):
+            self.current_tags = list (self.tags.all ())
+
+        return self.current_tags
 
 #class Zipcodes (models.Model):
 #    code = models.CharField (max_length=5)

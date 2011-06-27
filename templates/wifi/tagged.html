@@ -1,0 +1,25 @@
+{% extends "wifi/list.html" %}
+
+{% block title %}Tagged with {{ tag.name }} | {{ block.super }}{% endblock %}
+{% block extra_css %}
+{{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/google_map.css" type="text/css" />
+    {{ google_map.style }}
+{% endblock %}
+{% block extra_js %}
+    {{ google_map.scripts }}
+    {% include "wifi/info_windows.html" %}
+{% endblock %}
+{% block body %}
+<body onload="{{ google_map.js_module }}.{{ google_map.dom_id }}_load (); info_windows ();" {{ google_map.onunload }}>
+{% endblock %}
+
+{% block content %}
+    <div id="{{ google_map.dom_id }}">
+    </div>
+
+    {{ block.super }}
+{% endblock %}
+
+{% block page_header_title %}Tagged with {{ tag.name }}{% endblock %}
+

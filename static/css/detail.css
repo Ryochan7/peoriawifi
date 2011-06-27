@@ -1,0 +1,61 @@
+body {
+	font-family: arial, helvetica, sans-serif;
+}
+
+#page_header {
+	clear: both;
+}
+
+#page_header h1 {
+	font-size: 1.5em;
+}
+
+#info {
+	
+}
+
+#breadcrumb ul {
+	list-style: none;
+	padding: 0px 0px 10px 10px;
+}
+
+#breadcrumb li {
+	float: left;
+	margin-right: 10px;
+	background: url("/static/images/breadcrumb_arrow.png") no-repeat scroll 0 0 transparent;
+	padding-left: 20px;
+}
+
+#info #hotspot_image {
+	float: left;
+	width: 100px;
+}
+
+#info .address, #info .business_phone, #info .options,
+	#info .wireless {
+	margin-left: 100px;
+	padding-left: 20px;
+}
+
+#info .address {
+	margin-bottom: 6px;
+}
+
+#info .business_phone {
+	margin-top: 0px;
+	margin-bottom: 6px;
+}
+
+#info .wireless {
+	margin-top: 0px;
+}
+
+#info .tags {
+	clear: both;
+	padding-top: 15px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+#info .description {
+}
