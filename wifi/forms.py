@@ -33,7 +33,7 @@ class HotspotAdminForm (forms.ModelForm):
             return self.cleaned_data["phone"]
 
         regex = re.compile(r"""^1?
-                (\d{3})     # area code is 3 digits (e.g. '800')
+                \(?(\d{3})\)?     # area code is 3 digits (e.g. '800')
                 \D*         # optional separator is any number of non-digits
                 (\d{3})     # trunk is 3 digits (e.g. '555')
                 \D*         # optional separator
@@ -48,4 +48,17 @@ class HotspotAdminForm (forms.ModelForm):
         else:
             raise forms.ValidationError ("Phone number is not in the proper format")
         return custom
+
+class AddressSearchForm (forms.Form):
+    search = forms.CharField (max_length=1000, widget=forms.TextInput (attrs={'size': '30'}))
+
+class HotspotAddForm (HotspotAdminForm):
+    class Meta (object):
+        model = Hotspot
+        fields = ("name", "address", "phone", "restricted",
+            "in_city", "description", "source_image", "tags")
+
+    def save (self, commit=True):
+        self.instance.geometry = self.cleaned_data["geometry"]
+        return super (self.__class__, self).save (commit)
 

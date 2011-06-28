@@ -19,6 +19,10 @@
 
 <div id="page">
 {% block content %}
+    <form method="get" action="{% url wifi_search %}">
+        {{ search_form.as_p }}
+        <input type="Submit" value="Search" />
+    </form>
     <div id="{{ google_map.dom_id }}">
     </div>
 

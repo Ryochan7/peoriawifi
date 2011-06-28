@@ -6,5 +6,6 @@ django-pagination
 geopy (used for geocoding using Google)
 PIL (Python Imaging Library)
 sorl-thumbnail
-memcached and pylibmc or redis (to use with sorl-thumbnail)
+memcached
+pylibmc library
 

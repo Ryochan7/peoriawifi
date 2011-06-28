@@ -16,7 +16,7 @@
                 {% endthumbnail %}
                 </td><td class=\"basic_info\">
                 <p class=\"address\">{{ hotspot.address }}</p>
-                <p class=\"business_phone\">{{ hotspot.phone }}</p>
+                {% if hotspot.phone %}<p class=\"business_phone\">{{ hotspot.phone }}</p>{% endif %}
                 <div class=\"wireless\">Wireless: {{ hotspot.restricted|yesno:"Pay,Open,Unknown" }}</div>
                 <div class=\"more_info\">
                     <a href=\"{{ hotspot.get_absolute_url }}\">View More Details</a>
