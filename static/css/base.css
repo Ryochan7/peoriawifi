@@ -1,5 +1,169 @@
+body {
+	background-color: #000000;
+}
+
 #page {
 	width: 960px;
 	margin: 0px auto;
 	font-family: arial,helvetica,sans-serif;
+	background-color: #FFFFFF;
+}
+
+#header {
+	background-image: url("/static/images/header_bg.png");
+	height: 80px;
+	padding: 12px 6px 6px 6px;
+	border-radius: 10px 10px 0px 0px;
+}
+
+#logo_image {
+	float: left;
+	width: 209px;
+	margin-left: 10px;
+}
+
+#search_form {
+	float: left;
+	width: 580px;
+}
+
+#search_form ul {
+	float: left;
+	list-style: none;
+	padding-left: 10px;
+	width: 480px;
+}
+
+#search_form ul li {
+	float: left;
+}
+
+/*#search_form ul + li {
+	
+}*/
+
+#search_form ul li label[for="id_search"] {
+	font-size: 16px;
+	width: 54px;
+	margin-left: 10px;
+}
+
+#search_form ul li input[id="id_search"] {
+	width: 225px;
+}
+
+#search_form ul li span.helptext {
+	display: block;
+	margin-left: 70px;
+	margin-top: 4px;
+}
+
+#search_form ul li label[for="id_distance"] {
+	font-size: 16px;
+	margin-left: 14px;
+}
+
+#search_form ul li select[id="id_distance"] {
+	width: 80px;
+}
+
+#search_form input[type="submit"] {
+	width: 60px;
+	margin-top: 1.0em;
+	margin-left: 14px;
+}
+
+#navbar {
+	clear: both;
+	height: 50px;
+	background-image: url("/static/images/navbar_bg.png");
+	
+}
+
+#navbar ul {
+	list-style: none;
+	margin: 0px;
+	line-height: 50px;
+	padding-left: 10px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#navbar ul li {
+	float: left;
+	width: 100px;
+	margin: 0px auto;
+	border-left: 1px solid #FFFFFF;
+	border-right: 1px solid #000000;	
+}
+
+
+#navbar ul li a {
+	text-decoration: none;
+}
+
+#navbar ul li.empty {
+	width: 0px;
+}
+
+#navbar ul li.empty.first {
+	border-left: none;
+}
+
+#navbar ul li.empty.last {
+	border-right: none;
+}
+
+#sidebar {
+	float: left;
+	width: 260px;
+	margin-top: 20px;
+	padding-left: 10px;
+}
+
+#sidebar ul {
+	list-style: none;
+	padding-left: 10px;
+}
+
+#sidebar ul li {
+	margin-bottom: 4px;
+}
+
+#content {
+	float: left;
+	width: 690px;
+	margin-top: 20px;
+}
+
+#map {
+	width: 675px;
+	height: 500px;
+}
+
+#footer {
+	background-color: #D9EDFB;
+	height: 100px;
+	clear: both;
+	position: relative;
+	border-radius: 10px;
+}
+
+#footer p#footer_note {
+	width: 290px;
+	float: left;
+	margin: 20px 10px;
+	font-size: 1.15em;
+}
+
+#footer #django_powered {
+	position: absolute;
+	bottom: 10px;
+	right: 235px;
+}
+
+#footer #pony_powered {
+	position: absolute;
+	bottom: 4px;
+	right: 0px;
 }

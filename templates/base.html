@@ -1,16 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<title>{% block title %}Peoria Wifi hotspots{% endblock %}</title>
+<title>{% block title %}Peoriawifi.com{% endblock %}</title>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css" />
-{% block extra_css %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/google_map.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/pagination.css" />
+{% block google_css %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/google_map.css" />
     {{ google_map.style }}
 {% endblock %}
-{% block extra_js %}
-{{ google_map.scripts }}
-{% include "wifi/info_windows.html" %}
+
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/list.css" />
 {% endblock %}
+
+{% block google_js %}
+    {{ google_map.scripts }}
+    {% include "wifi/info_windows.html" %}
+{% endblock %}
+
+{% block extra_js %}{% endblock %}
 </head>
 
 {% block body %}
@@ -18,18 +26,76 @@
 {% endblock %}
 
 <div id="page">
+{% block header %}
+    <div id="header">
+        <div id="logo_image">
+            <a href="{% url home %}"><img src="{{ STATIC_URL }}images/logo.png" alt="PeoriaWifi" /></a>
+        </div>
+        <div id="search_form">
+            <form method="get" action="{% url wifi_search %}">
+                <ul>
+                    {{ search_form.as_ul }}
+                </ul>
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block navigation %}
+    <div id="navbar">
+        <ul>
+            <li class="empty first">&nbsp;</li>
+            <li class="first"><a href="{% url home %}">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <li class="empty last">&nbsp;</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <div id="sidebar">
+        <h2>Cities</h2>
+        <ul>
+            <li><a href="{% url wifi_city_hotspots "1" %}">Peoria</a></li>
+            <li><a href="{% url wifi_city_hotspots "2" %}">East Peoria</a></li>
+        </ul>
+    </div>
+{% endblock %}
+
+<div id="content">
 {% block content %}
-    <form method="get" action="{% url wifi_search %}">
-        {{ search_form.as_p }}
-        <input type="Submit" value="Search" />
-    </form>
-    <div id="{{ google_map.dom_id }}">
-    </div>
+    {% block google_map %}
+        <div id="{{ google_map.dom_id }}">
+        </div>
+    {% endblock %}
 
-    <div id="page_header">
-        <h1>Peoria, IL Wifi Hotspot Map</h1>
-    </div>
+    {% block page_header %}
+        <div id="page_header">
+            <h1>{% block page_header_title %}Peoria, IL Wifi Hotspot Map{% endblock %}</h1>
+        </div>
+    {% endblock %}
 
+    {% block hotspot_list %}
+        {% include "wifi/list_display.html" %}
+    {% endblock %}
+{% endblock %}
+</div>
+
+{% block footer %}
+    <div id="footer">
+        <p id="footer_note">This portal is provided as-is. The best efforts will be made to keep the information available up to date.</p>
+        <div id="django_powered">
+            <a href="http://www.djangoproject.com/">
+                <img src="{{ STATIC_URL }}images/djangopowered126x54_grey.gif" alt="Power by Django" />
+            </a>
+        </div>
+        <div id="pony_powered">
+            <a href="http://djangopony.com/">
+                <img src="{{ STATIC_URL }}images/badge.png" alt="Pony Powered" />
+            </a>
+        </div>
+    </div>
 {% endblock %}
 </div>
 </body>

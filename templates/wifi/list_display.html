@@ -1,0 +1,27 @@
+{% load thumbnail %}
+{% load pagination_tags %}
+
+<div id="hotspot_list">
+{% if is_paginated %}{% paginate %}{% endif %}
+{% for hotspot in hotspot_list %}
+    <div class="hotspot_details">
+        <h2 class="hotspot_name"><a href="{{ hotspot.get_absolute_url }}">{{ hotspot.name }}</a></h2>
+
+        <p class="hotspot_image">
+        {% thumbnail hotspot.source_image "70x70" crop="center" as im %}
+            <img src="{{ im.url }}" alt="{{ hotspot.name }} image" class="hotspot_image" />
+        {% empty %}
+            <img src="{{ STATIC_URL }}images/wifi.png" alt="hotspot image" class="hotspot_image" />
+        {% endthumbnail %}
+        </p>
+
+        <p class="address">{{ hotspot.address }}</p>
+        {% if hotspot.phone %}<p class="business_phone">{{ hotspot.phone }}</p>{% endif %}
+        <p class="more_info"><a href="{{ hotspot.get_absolute_url }}">View Details</a></p>
+        <p class="tags">Tags: {% for tag in hotspot.populated_tags %}<a href="{% url wifi_hotspot_tag tag.slug %}">{{ tag }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>
+        {% comment %}<p class="description">{{ hotspot.description }}</p>{% endcomment %}
+    </div>
+{% endfor %}
+{% if is_paginated %}{% paginate %}{% endif %}
+</div>
+

@@ -2,7 +2,8 @@ from django.conf.urls.defaults import patterns, include, url
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from wifi.views import (WifiIndexView, HotspotSearchView, HotspotDetailsView,
-    HotspotListView, HotspotTaggedView, HotspotAddView)
+    HotspotListView, HotspotTaggedView, HotspotAddView, HotspotCityTaggedView,
+    HotspotCityView)
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -21,8 +22,10 @@ urlpatterns = patterns('',
     url(r"^$", WifiIndexView.as_view (), name="home"),
     url(r"^search/$", HotspotSearchView.as_view (), name="wifi_search"),
     url(r"^hotspots/$", HotspotListView.as_view (), name="wifi_hotspot_list"),
+    url(r"^hotspots/tag/(?P<tag_slug>\w+)/$", HotspotTaggedView.as_view (), name="wifi_hotspot_tag"),
+    url(r"^hotspots/city/(?P<city_id>\d+)/$", HotspotCityView.as_view (), name="wifi_city_hotspots"),
+    url(r"^hotspots/city/(?P<city_id>\d+)/tag/(?P<tag_slug>\w+)/$", HotspotCityTaggedView.as_view (), name="wifi_city_tagged"),
     url(r"^hotspot/(?P<pk>\d+)/$", HotspotDetailsView.as_view (), name="wifi_hotspot_details"),
-    url(r"^hotspot/tag/(?P<tag_slug>\w+)/$", HotspotTaggedView.as_view (), name="wifi_hotspot_tag"),
     url(r"^hotspot/add/$", login_required (HotspotAddView.as_view ()), name="wifi_add_hotspot"),
 )
 

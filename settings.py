@@ -1,6 +1,7 @@
 # Django settings for peoriawifi project.
 
 import os
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -108,8 +109,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'pagination.middleware.PaginationMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + ("django.core.context_processors.request",)
 
 ROOT_URLCONF = 'peoriawifi.urls'
 
@@ -134,6 +138,7 @@ INSTALLED_APPS = (
     "sorl.thumbnail",
     "taggit",
     "taggit_templatetags",
+    "pagination",
     "wifi",
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',

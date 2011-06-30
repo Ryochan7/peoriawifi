@@ -7,6 +7,7 @@ geopy
 PIL
 sorl-thumbnail
 pylibmc
+psycopg2
 #ligeos
 #Python_GDAL
 #django-extensions

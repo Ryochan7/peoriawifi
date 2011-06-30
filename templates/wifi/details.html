@@ -35,7 +35,7 @@
         {% endthumbnail %}
 
         <p class="address">Address: {{ hotspot.address }}</p>
-        <p class="business_phone">Phone: {{ hotspot.phone }}</p>
+        {% if hotspot.phone %}<p class="business_phone">Phone: {{ hotspot.phone }}</p>{% endif %}
         <p class="wireless">Wireless: {{ hotspot.restricted|yesno:"Pay,Open,Unknown" }}</p>
         <p class="options"><a href="http://maps.google.com/?daddr={{ hotspot.address|urlencode }}" target="new">directions</a></p>
         <p class="tags">Tags: {% for tag in hotspot.populated_tags %}<a href="{% url wifi_hotspot_tag tag.slug %}">{{ tag }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>

@@ -2,38 +2,11 @@
 
 {% block title %}Hotspot List | {{ block.super }}{% endblock %}
 
-{% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/list.css" />
-{% endblock %}
-{% block extra_js %}{% endblock %}
 {% block body %}<body>{% endblock %}
 
 {% block content %}
-    <div id="page_header">
-        <h1>{% block page_header_title %}List for Peoria, IL Wifi Hotspots{% endblock %}</h1>
-    </div>
-
-    {% load thumbnail %}
-    <div id="hotspot_list">
-        {% for hotspot in hotspot_list %}
-            <div class="hotspot_details">
-                <h2 class="hotspot_name"><a href="{{ hotspot.get_absolute_url }}">{{ hotspot.name }}</a></h2>
-
-                <p class="hotspot_image">
-                {% thumbnail hotspot.source_image "70x70" crop="center" as im %}
-                    <img src="{{ im.url }}" alt="{{ hotspot.name }} image" class="hotspot_image" />
-                {% empty %}
-                    <img src="{{ STATIC_URL }}images/wifi.png" alt="hotspot image" class="hotspot_image" />
-                {% endthumbnail %}
-                </p>
-
-                <p class="address">{{ hotspot.address }}</p>
-                <p class="business_phone">{{ hotspot.phone }}</p>
-                <p class="more_info"><a href="{{ hotspot.get_absolute_url }}">View Details</a></p>
-                <p class="tags">Tags: {% for tag in hotspot.populated_tags %}<a href="{% url wifi_hotspot_tag tag.slug %}">{{ tag }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>
-                <p class="description">{{ hotspot.description }}</p>
-            </div>
-        {% endfor %}
-    </div>
+{{ block.super }}
 {% endblock %}
+
+{% block page_header_title %}List for Peoria, IL Wifi Hotspots{% endblock %}
 

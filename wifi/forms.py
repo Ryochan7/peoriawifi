@@ -1,5 +1,6 @@
 import re
 from geopy import geocoders
+from geopy.geocoders.google import GQueryError
 from django import forms
 from django.contrib.gis.geos import Point
 from wifi.models import Hotspot
@@ -19,7 +20,7 @@ class HotspotAdminForm (forms.ModelForm):
                 temp_point = g.geocode (self.cleaned_data["address"])
             except ValueError as exception:
                 self._errors["address"] = self.error_class ([exception.message])
-            except geocoders.GQueryError as exception:
+            except GQueryError as exception:
                 self._errors["address"] = self.error_class (["Could not find a corresponding addresss"])
             finally:
                 if temp_point:
@@ -50,7 +51,15 @@ class HotspotAdminForm (forms.ModelForm):
         return custom
 
 class AddressSearchForm (forms.Form):
-    search = forms.CharField (max_length=1000, widget=forms.TextInput (attrs={'size': '30'}))
+    DISTANCE_CHOICES = (
+        (1, "1 mile"),
+        (5, "5 miles"),
+        (10, "10 miles"),
+        (25, "25 miles"),
+        (50, "50 miles"),
+    )
+    search = forms.CharField (max_length=1000, help_text="Address or Zipcode", widget=forms.TextInput (attrs={'size': '30'}))
+    distance = forms.ChoiceField (choices=DISTANCE_CHOICES, initial=25)
 
 class HotspotAddForm (HotspotAdminForm):
     class Meta (object):
