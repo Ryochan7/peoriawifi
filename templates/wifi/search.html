@@ -1,0 +1,8 @@
+{% extends "wifi/base.html" %}
+
+{% block page_header_title %}Hotspot Search Results{% endblock %}
+
+{% block pagination_title %}
+    Viewing {{ page_obj.start_index }}-{{ page_obj.end_index }}
+    out of {{ paginator.count }} results
+{% endblock %}

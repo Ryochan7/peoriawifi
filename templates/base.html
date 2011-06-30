@@ -72,11 +72,12 @@
 
     {% block page_header %}
         <div id="page_header">
-            <h1>{% block page_header_title %}Peoria, IL Wifi Hotspot Map{% endblock %}</h1>
+            <h1>{% block page_header_title %}Wifi Hotspot Map{% endblock %}</h1>
         </div>
     {% endblock %}
 
     {% block hotspot_list %}
+        <p>{% block pagination_title %}Viewing {{ page_obj.start_index }}-{{ page_obj.end_index }} out of {{ paginator.count }}{% endblock %}</p>
         {% include "wifi/list_display.html" %}
     {% endblock %}
 {% endblock %}

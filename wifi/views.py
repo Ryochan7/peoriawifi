@@ -74,7 +74,7 @@ class WifiIndexView (ListView):
 
 class HotspotSearchView (TemplateView):
     http_method_names = ["get"]
-    template_name = "wifi/base.html"
+    template_name = "wifi/search.html"
 
     def get (self, request, *args, **kwargs):
         valid_form = False
@@ -140,10 +140,18 @@ class HotspotDetailsView (DetailView):
 
 class HotspotListView (ListView):
     center_point = Point (-89.5889864, 40.6936488, srid=4326)
+    paginate_by = 5
     queryset = Hotspot.objects.filter (geometry__distance_lte=(center_point, D(mi=20))).select_related (depth=2)
     template_name = "wifi/list.html"
 
+    def get_context_data (self, **kwargs):
+        context = super (HotspotListView, self).get_context_data (**kwargs)
+        search_form = AddressSearchForm ()
+        context["search_form"] = search_form
+        return context
+
 class HotspotCityView (ListView):
+    paginate_by = 5
     template_name = "wifi/list.html"
 
     def get_queryset (self):
@@ -153,7 +161,7 @@ class HotspotCityView (ListView):
 
     def get_context_data (self, **kwargs):
         context = super (HotspotCityView, self).get_context_data (**kwargs)
-        google_map = get_google_hotspot_map (self.object_list)
+        google_map = get_google_hotspot_map (context["object_list"])
         context["google_map"] = google_map
         city_id = self.kwargs.get ("city_id")
         city = get_object_or_404 (City, id=city_id)
@@ -165,6 +173,7 @@ class HotspotCityView (ListView):
 
 class HotspotTaggedView (ListView):
     template_name = "wifi/tagged.html"
+    paginate_by = 5
     center_point = Point (-89.5889864, 40.6936488, srid=4326)
 
     def get_queryset (self):
@@ -173,7 +182,7 @@ class HotspotTaggedView (ListView):
 
     def get_context_data (self, **kwargs):
         context = super (HotspotTaggedView, self).get_context_data (**kwargs)
-        google_map = get_google_hotspot_map (self.object_list)
+        google_map = get_google_hotspot_map (context["object_list"])
         context["google_map"] = google_map
 
         tag_slug = self.kwargs.get ("tag_slug")

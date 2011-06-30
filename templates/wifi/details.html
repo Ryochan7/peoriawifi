@@ -3,15 +3,16 @@
 {% block title %}{{ hotspot.name }} Details | {{ block.super }}{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}css/detail.css" />
-{{ block.super }}
 {% endblock %}
 {% block body %}
 <body onload="{{ google_map.js_module }}.{{ google_map.dom_id }}_load (); customize_map ();" {{ google_maps.onunload }}>
 {% endblock %}
 
+{% block sidebar %}
+{% endblock %}
+
 {% block content %}
-    <div id="{{ google_map.dom_id }}" class="long_format">
-    </div>
+    {{ block.super }}
 
     <div id="breadcrumb">
         <ul>
@@ -20,11 +21,6 @@
             <li>{{ hotspot.name }}</li>
         </ul>
     </div>
-    {% block page_header %}
-        <div id="page_header">
-            <h1>{{ hotspot.name }}</h1>
-        </div>
-    {% endblock %}
 
     {% load thumbnail %}
     <div id="info">
@@ -48,3 +44,11 @@
     };
     </script>
 {% endblock %}
+
+{% block google_map %}
+    <div id="{{ google_map.dom_id }}" class="long_format">
+    </div>
+{% endblock %}
+
+{% block page_header_title %}{{ hotspot.name }}{% endblock %}
+
