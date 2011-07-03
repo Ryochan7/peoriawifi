@@ -72,6 +72,27 @@ def get_google_address_info (search):
     return data
 
 
+class FilteredView (ListView):
+    filter_form = None
+
+    def get (self, request, *args, **kwargs):
+        self.filter_form = HotspotFilterForm (request.GET)
+        return super (FilteredView, self).get (request, *args, **kwargs)
+
+    def get_queryset (self):
+        queryset = super (FilteredView, self).get_queryset ()
+        if self.filter_form.is_valid ():
+            free = self.filter_form.cleaned_data["free"]
+            queryset = queryset.filter (restricted=not free)
+        return queryset
+
+    def get_context_data (self, **kwargs):
+        context = super (FilteredView, self).get_context_data (**kwargs)
+        context["filter_form"] = self.filter_form
+        if not self.filter_form.is_valid ():
+            context["filter_form"] = HotspotFilterForm ()
+        return context
+
 class WifiIndexView (ListView):
     template_name = "index.html"
     paginate_by = 2
@@ -169,7 +190,6 @@ class HotspotSearchView (ListView):
 class HotspotFilteredView (HotspotSearchView):
     filter_form = None
     
-
     def get (self, request, *args, **kwargs):
         self.filter_form = HotspotFilterForm (request.GET)
         return super (HotspotFilteredView, self).get (request, *args, **kwargs)
@@ -221,13 +241,14 @@ class HotspotListView (ListView):
         context["search_form"] = search_form
         return context
 
-class HotspotCityView (ListView):
+class HotspotCityView (FilteredView):
     paginate_by = 5
     template_name = "wifi/city.html"
 
     def get_queryset (self):
         city_id = self.kwargs.get ("city_id")
-        queryset = Hotspot.objects.filter (in_city__id=city_id).select_related (depth=2)
+        self.queryset = Hotspot.objects.filter (in_city__id=city_id).select_related (depth=2)
+        queryset = super (HotspotCityView, self).get_queryset ()
         return queryset
 
     def get_context_data (self, **kwargs):
@@ -239,17 +260,20 @@ class HotspotCityView (ListView):
         context["city"] = city
 
         search_form = AddressSearchForm ()
-        context["search_form"] = search_form 
+        context["search_form"] = search_form
+        context["filter_form_use_url"] = True
         return context
 
-class HotspotTaggedView (ListView):
+class HotspotTaggedView (FilteredView):
     template_name = "wifi/tagged.html"
     paginate_by = 5
     center_point = Point (settings.DEFAULT_LON, settings.DEFAULT_LAT, srid=4326)
 
     def get_queryset (self):
         tag_slug = self.kwargs.get ("tag_slug")
-        return Hotspot.objects.filter (tags__slug=tag_slug).filter (geometry__distance_lte=(self.center_point, D(mi=20)))
+        self.queryset = Hotspot.objects.filter (tags__slug=tag_slug).filter (geometry__distance_lte=(self.center_point, D(mi=20)))
+        queryset = super (HotspotTaggedView, self).get_queryset ()
+        return queryset
 
     def get_context_data (self, **kwargs):
         context = super (HotspotTaggedView, self).get_context_data (**kwargs)
@@ -262,13 +286,15 @@ class HotspotTaggedView (ListView):
 
         search_form = AddressSearchForm ()
         context["search_form"] = search_form
+        context["filter_form_use_url"] = True
         return context
 
 class HotspotCityTaggedView (HotspotTaggedView):
     def get_queryset (self):
         queryset = super (HotspotCityTaggedView, self).get_queryset ()
         city_id = self.kwargs.get ("city_id")
-        return queryset.filter (in_city__id=city_id)
+        queryset = queryset.filter (in_city__id=city_id)
+        return queryset
 
     def get_context_data (self, **kwargs):
         context = super (HotspotCityTaggedView, self).get_context_data (**kwargs)
@@ -277,7 +303,8 @@ class HotspotCityTaggedView (HotspotTaggedView):
         context["city"] = city
 
         search_form = AddressSearchForm ()
-        context["search_form"] = search_form 
+        context["search_form"] = search_form
+        context["filter_form_use_url"] = True
         return context
 
 class HotspotAddView (CreateView):
@@ -288,6 +315,7 @@ class HotspotAddView (CreateView):
     def get_context_data (self, **kwargs):
         context = super (HotspotAddView, self).get_context_data (**kwargs)
         search_form = AddressSearchForm ()
-        context["search_form"] = search_form 
+        context["search_form"] = search_form
+        context["filter_form"] = HotspotFilterForm ()
         return context
 

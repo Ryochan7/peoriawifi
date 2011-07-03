@@ -68,7 +68,12 @@
 
         {% block sidebar_filters %}
             <h2>Filters</h2>
-            <form method="get" action="{% url wifi_filtered_search %}">
+            {% if filter_form_use_url %}
+                <form method="get" action="">
+            {% else %}
+                <form method="get" action="{% url wifi_filtered_search %}">
+            {% endif %}
+                
                 <ul id="filter_form">
                     {{ filter_form.as_ul }}
                 </ul>
