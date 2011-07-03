@@ -48,6 +48,11 @@
             <li class="empty first">&nbsp;</li>
             <li class="first"><a href="{% url home %}">Home</a></li>
             <li><a href="/about/">About</a></li>
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url wifi_add_hotspot %}">Add</a>
+                <li>
+            {% endif %}
             {% if user.is_superuser %}<li><a href="/admin/">Admin</a>{% endif %}
             <li class="empty last">&nbsp;</li>
         </ul>

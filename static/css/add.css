@@ -1,0 +1,36 @@
+.add_form {
+}
+
+.add_form ul {
+	list-style: none;
+}
+
+.add_form ul li {
+	margin-top: 10px;
+	clear: both;
+}
+
+.add_form ul li label {
+	float: left;
+	width: 150px;
+}
+
+.add_form label span.required {
+	font-weight: bold;
+}
+
+.add_form span.help_text {
+	display: block;
+	margin-left: 150px;
+	font-size: 0.85em;
+}
+
+.add_form textarea[name="description"] {
+	width: 425px;
+}
+
+.add_form input[type="submit"] {
+	clear: both;
+	display: block;
+	margin: 20px 0px 30px 190px;
+}

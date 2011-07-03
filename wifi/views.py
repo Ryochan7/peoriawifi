@@ -99,8 +99,10 @@ class WifiIndexView (ListView):
     center_point = Point (settings.DEFAULT_LON, settings.DEFAULT_LAT, srid=4326)
 
     def get_queryset (self):
-        # Get all Hotspots within 20 miles
-        queryset = Hotspot.objects.filter (geometry__distance_lte=(self.center_point, D(mi=20))).select_related (depth=2)
+        # Get all Hotspots within 25 miles
+        queryset = Hotspot.objects.filter (
+            geometry__distance_lte=(self.center_point, D(mi=25))
+            ).select_related (depth=2)
         return queryset
 
     def get_context_data (self, **kwargs):
@@ -112,7 +114,6 @@ class WifiIndexView (ListView):
         context["search_form"] = search_form
         context["filter_form"] = HotspotFilterForm ()
         return context
-
 
 class HotspotSearchView (ListView):
     http_method_names = ["get"]
@@ -138,7 +139,9 @@ class HotspotSearchView (ListView):
             info = get_google_address_info (form.cleaned_data["search"])
             search = form.cleaned_data["search"]
             if not info:
-                form._errors["search"] = form.error_class (["Data point could not be determined"])
+                form._errors["search"] = form.error_class (
+                    ["Data point could not be determined"]
+                )
             else:
                 center = info
                 search_distance = form.cleaned_data["distance"]
@@ -163,8 +166,9 @@ class HotspotSearchView (ListView):
             )
         elif center:
             hotspots = Hotspot.objects.filter (
-                geometry__distance_lte=(center, D(mi=search_form.fields["distance"].initial))
-        )
+                geometry__distance_lte=(center,
+                D(mi=search_form.fields["distance"].initial))
+            )
         else:
             hotspots = Hotspot.objects.none ()
        
@@ -184,7 +188,9 @@ class HotspotSearchView (ListView):
 
         context["google_map"] = google_map
         context["search_form"] = search_form
-        context["filter_form"] = HotspotFilterForm (initial={"search": search, "distance": search_distance})
+        context["filter_form"] = HotspotFilterForm (
+            initial={"search": search, "distance": search_distance}
+        )
         return context
 
 class HotspotFilteredView (HotspotSearchView):
@@ -199,7 +205,9 @@ class HotspotFilteredView (HotspotSearchView):
         if center:
             queryset = super (HotspotFilteredView, self).get_queryset ()
         else:
-            queryset = Hotspot.objects.filter (geometry__distance_lte=(self.center_point, D(mi=20))).select_related (depth=2)
+            queryset = Hotspot.objects.filter (
+                geometry__distance_lte=(self.center_point, D(mi=25))
+                ).select_related (depth=2)
 
         if self.filter_form.is_valid ():
             free = self.filter_form.cleaned_data["free"]
@@ -230,9 +238,12 @@ class HotspotDetailsView (DetailView):
         return context
 
 class HotspotListView (ListView):
-    center_point = Point (settings.DEFAULT_LON, settings.DEFAULT_LAT, srid=4326)
+    center_point = Point (settings.DEFAULT_LON, settings.DEFAULT_LAT,
+        srid=4326)
     paginate_by = 5
-    queryset = Hotspot.objects.filter (geometry__distance_lte=(center_point, D(mi=20))).select_related (depth=2)
+    queryset = Hotspot.objects.filter (
+        geometry__distance_lte=(center_point, D(mi=25))
+        ).select_related (depth=2)
     template_name = "wifi/list.html"
 
     def get_context_data (self, **kwargs):
@@ -247,7 +258,8 @@ class HotspotCityView (FilteredView):
 
     def get_queryset (self):
         city_id = self.kwargs.get ("city_id")
-        self.queryset = Hotspot.objects.filter (in_city__id=city_id).select_related (depth=2)
+        self.queryset = Hotspot.objects.filter (
+            in_city__id=city_id).select_related (depth=2)
         queryset = super (HotspotCityView, self).get_queryset ()
         return queryset
 
@@ -271,7 +283,9 @@ class HotspotTaggedView (FilteredView):
 
     def get_queryset (self):
         tag_slug = self.kwargs.get ("tag_slug")
-        self.queryset = Hotspot.objects.filter (tags__slug=tag_slug).filter (geometry__distance_lte=(self.center_point, D(mi=20)))
+        self.queryset = Hotspot.objects.filter (tags__slug=tag_slug).filter (
+            geometry__distance_lte=(self.center_point, D(mi=25))
+        )
         queryset = super (HotspotTaggedView, self).get_queryset ()
         return queryset
 
@@ -297,7 +311,9 @@ class HotspotCityTaggedView (HotspotTaggedView):
         return queryset
 
     def get_context_data (self, **kwargs):
-        context = super (HotspotCityTaggedView, self).get_context_data (**kwargs)
+        context = super (HotspotCityTaggedView, self).get_context_data (
+            **kwargs
+        )
         city_id = self.kwargs.get ("city_id")
         city = get_object_or_404 (City, id=city_id)
         context["city"] = city

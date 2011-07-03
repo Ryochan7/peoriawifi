@@ -1,6 +1,14 @@
 {% extends "wifi/base.html" %}
+{% block extra_css %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/add.css" />
+{% endblock %}
+
+{% block google_css %}{% endblock %}
+{% block google_js %}{% endblock %}
+{% block body %}<body>{% endblock %}
 
 {% block content %}
+    <div class="add_form">
     <form method="post" action="">
         {% csrf_token %}
         <ul>
@@ -9,16 +17,18 @@
             {{ field.errors }}
             <label for="{{ field.auto_id }}">
                 {% if field.field.required %}
-                    <span class="required">{{ field.label }}</span>
+                    <span class="required">{{ field.label }}:</span>
                 {% else %}
-                    {{ field.label }}
+                    {{ field.label }}:
                 {% endif %}
             </label>
             {{ field }}
+            <span class="help_text">{{ field.help_text|safe }}</span>
             </li>
         {% endfor %}
         </ul>
         <input type="Submit" value="Add Hotspot" />
     </form>
+    </div>
 {% endblock %}
 
