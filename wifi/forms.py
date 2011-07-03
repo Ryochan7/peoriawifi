@@ -60,6 +60,21 @@ class AddressSearchForm (forms.Form):
     )
     search = forms.CharField (max_length=1000, help_text="Address or Zipcode", widget=forms.TextInput (attrs={'size': '30'}))
     distance = forms.ChoiceField (choices=DISTANCE_CHOICES, initial=25)
+    #restricted = forms.BooleanField (required=False, initial=False, widget=forms.HiddenInput ())
+
+# Used as a validator for the Only Free filter
+class HotspotFilterForm (forms.Form):
+    DISTANCE_CHOICES = (
+        (1, "1 mile"),
+        (5, "5 miles"),
+        (10, "10 miles"),
+        (25, "25 miles"),
+        (50, "50 miles"),
+    )
+
+    free = forms.BooleanField (initial=False)
+    search = forms.CharField (required=False, max_length=1000, help_text="Address or Zipcode", widget=forms.HiddenInput())
+    distance = forms.ChoiceField (required=False, choices=DISTANCE_CHOICES, initial=25, widget=forms.HiddenInput ())
 
 class HotspotAddForm (HotspotAdminForm):
     class Meta (object):

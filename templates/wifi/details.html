@@ -13,7 +13,10 @@
 
 {% block content %}
     {{ block.super }}
+    {% if request.META.HTTP_REFERER %}<span class="back_link"><a href="{{ request.META.HTTP_REFERER }}">&lt;&lt;back</a></span>{% endif %}
+ 
     {% if user.is_superuser %}<span class="edit"><a href="{{ hotspot.edit_link }}">Edit {{ hotspot.name }}</a></span>{% endif %}
+
     <div id="breadcrumb">
         <ul>
             <li><a href="{% url home %}">Home</a></li>
@@ -35,7 +38,7 @@
         <p class="address">Address: {{ hotspot.address }}</p>
         {% if hotspot.phone %}<p class="business_phone">Phone: {{ hotspot.phone }}</p>{% endif %}
         <p class="wireless">Wireless: {{ hotspot.restricted|yesno:"Pay,Open,Unknown" }}</p>
-        <p class="options">{% if hotspot.google_cid %}<a href="http://maps.google.com/maps/place?cid={{ hotspot.google_cid }}" target="new">On Google Maps</a> | {% endif %}<a href="http://maps.google.com/?daddr={{ hotspot.address|urlencode }}" target="new">Directions</a></p>
+        <p class="options">{% if hotspot.google_cid %}<a href="http://maps.google.com/maps/place?cid={{ hotspot.google_cid }}" target="new">On Google Places</a> | {% endif %}<a href="http://maps.google.com/?daddr={{ hotspot.address|urlencode }}" target="new">Directions</a></p>
         <p class="tags">Tags: {% for tag in hotspot.populated_tags %}<a href="{% url wifi_hotspot_tag tag.slug %}">{{ tag }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>
         <p class="description">{{ hotspot.description }}</p>
     </div>

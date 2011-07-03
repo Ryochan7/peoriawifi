@@ -55,6 +55,8 @@
 {% endblock %}
 
 {% block sidebar %}
+    {% load wifi_extras_tags %}
+
     <div id="sidebar">
         <p id="welcome_message">Welcome to Peoriawifi.com</p>
         <h2>Featured Cities</h2>
@@ -65,14 +67,16 @@
         </ul>
 
         {% block sidebar_filters %}
-            <h2>Filter</h2>
-            <ul>
-                <li><a href="">Only Free</a></li>
-            </ul>
+            <h2>Filters</h2>
+            <form method="get" action="{% url wifi_filtered_search %}">
+                <ul id="filter_form">
+                    {{ filter_form.as_ul }}
+                </ul>
+                <input type="submit" value="Filter" />
+            </form>
         {% endblock %}
 
         <h2>Featured</h2>
-        {% load wifi_extras_tags %}
         {% featured_wifi_spot %}
     </div>
 {% endblock %}

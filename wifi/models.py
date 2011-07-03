@@ -57,7 +57,7 @@ class Hotspot (models.Model):
     in_city = models.ForeignKey (City)
     source_image = ImageField (upload_to="hotspot_images", max_length=256, blank=True)
     date_added = models.DateTimeField (default=datetime.now)
-    google_cid = models.CharField (max_length=20, blank=True, help_text="Enter the cid of the business' page from Google Maps")
+    google_cid = models.CharField (max_length=20, blank=True, help_text="Enter the cid of the business' page from Google Places")
     tags = TaggableManager ()
     # blank and null must be used or widget validation will raise an error on blank
     geometry = models.PointField (srid=4326, blank=True, null=True, help_text="If no point is provided, the address field will be used to find a point from Google Maps")

@@ -139,6 +139,11 @@ body {
 	margin-bottom: 4px;
 }
 
+#sidebar #welcome_message {
+	font-weight: bold;
+	font-size: 1.20em;
+}
+
 #featured_spot {
 	margin-left: 10px;
 }
