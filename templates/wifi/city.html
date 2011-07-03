@@ -1,0 +1,10 @@
+{% extends "wifi/list.html" %}
+
+{% block title %}{{ city }} | {{ block.super }}{% endblock %}
+
+{% block body %}
+<body onload="{{ google_map.js_module }}.{{ google_map.dom_id }}_load (); info_windows ();" {{ google_maps.onunload }}>
+{% endblock %}
+
+{% block page_header_title %}In city: {{ city }}{% endblock %}
+

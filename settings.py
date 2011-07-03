@@ -113,7 +113,7 @@ MIDDLEWARE_CLASSES = (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + ("django.core.context_processors.request",)
+TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + ("django.core.context_processors.request", "wifi.context_processors.featured_cities",)
 
 ROOT_URLCONF = 'peoriawifi.urls'
 

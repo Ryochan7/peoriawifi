@@ -21,7 +21,7 @@ class HotspotAdmin (OpenlayersMixin, AdminImageMixin, admin.OSMGeoAdmin):
     list_filter = ["restricted", "status", "date_added"]
     search_fields = ["name", "address"]
     fieldsets = (
-        ("Hotspot Information", {"fields": ["name", "address", "phone", "description", "tags", "restricted", "source_image"]}),
+        ("Hotspot Information", {"fields": ["name", "address", "phone", "description", "tags", "restricted", "google_cid", "source_image"]}),
         ("Location Information", {"fields": ["in_city", "geometry"]}),
         ("Publication Status", {"fields": ["status", "date_added"]}),
     )

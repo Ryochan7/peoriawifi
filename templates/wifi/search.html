@@ -1,4 +1,7 @@
 {% extends "wifi/base.html" %}
+{% block title %}
+    {% if search_form.is_valid %}Near {{ search_form.cleaned_data.search }} | {% endif %}{{ block.super }}
+{% endblock %}
 
 {% block page_header_title %}Hotspot Search Results{% endblock %}
 

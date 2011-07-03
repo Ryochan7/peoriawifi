@@ -48,6 +48,7 @@
             <li class="empty first">&nbsp;</li>
             <li class="first"><a href="{% url home %}">Home</a></li>
             <li><a href="/about/">About</a></li>
+            {% if user.is_superuser %}<li><a href="/admin/">Admin</a>{% endif %}
             <li class="empty last">&nbsp;</li>
         </ul>
     </div>
@@ -55,11 +56,24 @@
 
 {% block sidebar %}
     <div id="sidebar">
-        <h2>Cities</h2>
+        <p id="welcome_message">Welcome to Peoriawifi.com</p>
+        <h2>Featured Cities</h2>
         <ul>
-            <li><a href="{% url wifi_city_hotspots "1" %}">Peoria</a></li>
-            <li><a href="{% url wifi_city_hotspots "2" %}">East Peoria</a></li>
+            {% for city in featured_cities %}
+                <li><a href="{{ city.get_absolute_url }}">{{ city.name }}</a></li>
+            {% endfor %}
         </ul>
+
+        {% block sidebar_filters %}
+            <h2>Filter</h2>
+            <ul>
+                <li><a href="">Only Free</a></li>
+            </ul>
+        {% endblock %}
+
+        <h2>Featured</h2>
+        {% load wifi_extras_tags %}
+        {% featured_wifi_spot %}
     </div>
 {% endblock %}
 

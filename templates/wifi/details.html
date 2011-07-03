@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}css/detail.css" />
 {% endblock %}
 {% block body %}
-<body onload="{{ google_map.js_module }}.{{ google_map.dom_id }}_load (); customize_map ();" {{ google_maps.onunload }}>
+<body onload="{{ google_map.js_module }}.{{ google_map.dom_id }}_load ();" {{ google_maps.onunload }}>
 {% endblock %}
 
 {% block sidebar %}
@@ -13,36 +13,33 @@
 
 {% block content %}
     {{ block.super }}
-
+    {% if user.is_superuser %}<span class="edit"><a href="{{ hotspot.edit_link }}">Edit {{ hotspot.name }}</a></span>{% endif %}
     <div id="breadcrumb">
         <ul>
             <li><a href="{% url home %}">Home</a></li>
-            <li>{{ hotspot.in_city }}</li>
+            <li><a href="{{ hotspot.in_city.get_absolute_url }}">{{ hotspot.in_city }}</a></li>
             <li>{{ hotspot.name }}</li>
         </ul>
     </div>
 
     {% load thumbnail %}
     <div id="info">
+        <p>{% spaceless %}
         {% thumbnail hotspot.source_image "100x100" crop="center" as im %}
             <img id="hotspot_image" src="{{ im.url }}" alt="{{ hotspot.name }} image" class="hotspot_image" />
         {% empty %}
             <img id="hotspot_image" src="{{ STATIC_URL }}images/wifi.png" alt="hotspot image" class="hotspot_image" />
         {% endthumbnail %}
+        {% endspaceless %}</p>
 
         <p class="address">Address: {{ hotspot.address }}</p>
         {% if hotspot.phone %}<p class="business_phone">Phone: {{ hotspot.phone }}</p>{% endif %}
         <p class="wireless">Wireless: {{ hotspot.restricted|yesno:"Pay,Open,Unknown" }}</p>
-        <p class="options"><a href="http://maps.google.com/?daddr={{ hotspot.address|urlencode }}" target="new">directions</a></p>
+        <p class="options">{% if hotspot.google_cid %}<a href="http://maps.google.com/maps/place?cid={{ hotspot.google_cid }}" target="new">On Google Maps</a> | {% endif %}<a href="http://maps.google.com/?daddr={{ hotspot.address|urlencode }}" target="new">Directions</a></p>
         <p class="tags">Tags: {% for tag in hotspot.populated_tags %}<a href="{% url wifi_hotspot_tag tag.slug %}">{{ tag }}</a>{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</p>
         <p class="description">{{ hotspot.description }}</p>
     </div>
 
-    <script type="text/javascript">
-    customize_map = function () {
-        geodjango.map.setZoom (16);
-    };
-    </script>
 {% endblock %}
 
 {% block google_map %}
@@ -51,4 +48,5 @@
 {% endblock %}
 
 {% block page_header_title %}{{ hotspot.name }}{% endblock %}
-
+{% block pagination_title %}{% endblock %}
+{% block hotspot_list %}{% endblock %}

@@ -12,7 +12,12 @@
 }
 
 #info {
-	
+	padding: 10px 0px 0px 10px;
+}
+
+#breadcrumb {
+	height: 16px;
+	line-height: 16px;
 }
 
 #breadcrumb ul {

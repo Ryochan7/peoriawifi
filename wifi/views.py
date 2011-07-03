@@ -2,7 +2,7 @@
 from django.views.generic import (TemplateView, ListView, DetailView,
     FormView, CreateView)
 from django.contrib.gis.maps.google.gmap import GoogleMap
-from django.contrib.gis.maps.google.overlays import GMarker, GEvent
+from django.contrib.gis.maps.google.overlays import GMarker, GEvent, GIcon
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from django.shortcuts import get_object_or_404
@@ -17,12 +17,29 @@ from wifi.conf import settings
 
 def get_google_hotspot_map (hotspots, zoom=None):
     markers = []
-    for hotspot in hotspots:
-        marker = GMarker (hotspot.geometry, title=hotspot.name)
+    center = (settings.DEFAULT_LON, settings.DEFAULT_LAT)
+    for i, hotspot in enumerate (hotspots):
+        if hotspot.restricted:
+            icon = GIcon ("hotspot{0}".format (i),
+                "http://www.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png",
+            iconsize=(32,32))
+            marker = GMarker (hotspot.geometry, title=hotspot.name, icon=icon)
+        else:
+            marker = GMarker (hotspot.geometry, title=hotspot.name)
+
         markers.append (marker)
 
+    num_markers = len (markers)
+    if num_markers > 1:
+        # Perform calc_zoom
+        zoom = None
+    elif num_markers == 1:
+        # Make point center
+        center = hotspots[0].geometry.get_coords ()
+        zoom = zoom if zoom else 15
+
     kwargs = {
-        "center": (settings.DEFAULT_LAT, settings.DEFAULT_LON),
+        "center": center,
         "markers": markers,
         "zoom": zoom,
     }
@@ -56,11 +73,10 @@ def get_google_address_info (search):
 
 class WifiIndexView (ListView):
     template_name = "index.html"
-    paginate_by = 5
-    center_point = Point (-89.5889864, 40.6936488, srid=4326)
+    paginate_by = 2
+    center_point = Point (settings.DEFAULT_LON, settings.DEFAULT_LAT, srid=4326)
     # Get all Hotspots within 20 miles
     queryset = Hotspot.objects.filter (geometry__distance_lte=(center_point, D(mi=20))).select_related (depth=2)
-    #queryset = Hotspot.objects.all ().select_related (depth=2)
 
     def get_context_data (self, **kwargs):
         context = super (WifiIndexView, self).get_context_data (**kwargs)
@@ -72,9 +88,12 @@ class WifiIndexView (ListView):
         return context
 
 
-class HotspotSearchView (TemplateView):
+class HotspotSearchView (ListView):
     http_method_names = ["get"]
+    paginate_by = 5
     template_name = "wifi/search.html"
+    view_options = {    
+    }
 
     def get (self, request, *args, **kwargs):
         valid_form = False
@@ -95,14 +114,19 @@ class HotspotSearchView (TemplateView):
                 center = info
                 search_distance = form.cleaned_data["distance"]
 
-        context = self.get_context_data (search_form=form, center=center, search_distance=search_distance)
-        return self.render_to_response (context)
+        self.view_options = {
+            "center": center,
+            "search_distance": search_distance,
+            "search_form": form,
+        }
 
-    def get_context_data (self, **kwargs):
-        center = kwargs.pop ("center", None)
-        search_form = kwargs.pop ("search_form")
-        search_distance = kwargs.pop ("search_distance", None)
-        context = super (HotspotSearchView, self).get_context_data (**kwargs)
+        return super (HotspotSearchView, self).get (request, *args, **kwargs)
+
+    def get_queryset (self):
+        hotspots = None
+        center = self.view_options.get ("center", None)
+        search_form = self.view_options.get ("search_form", None)
+        search_distance = self.view_options.get ("search_distance", None)
         if center and search_distance:
             hotspots = Hotspot.objects.filter (
                 geometry__distance_lte=(center, D(mi=search_distance))
@@ -110,17 +134,23 @@ class HotspotSearchView (TemplateView):
         elif center:
             hotspots = Hotspot.objects.filter (
                 geometry__distance_lte=(center, D(mi=search_form.fields["distance"].initial))
-            )
+        )
         else:
-            hotspots = list ()
+            hotspots = Hotspot.objects.none ()
+       
+        return hotspots
 
+    def get_context_data (self, **kwargs):
+        context = super (HotspotSearchView, self).get_context_data (**kwargs)
+        hotspots = context["object_list"]
+        center = self.view_options.get ("center", None)
+        search_form = self.view_options.get ("search_form", None)
         google_map = get_google_hotspot_map (hotspots, zoom=12)
         if center:
             google_map.center = center.get_coords ()
 
         context["google_map"] = google_map
         context["search_form"] = search_form
-        context["hotspot_list"] = hotspots
         return context
 
 class HotspotDetailsView (DetailView):
@@ -139,7 +169,7 @@ class HotspotDetailsView (DetailView):
         return context
 
 class HotspotListView (ListView):
-    center_point = Point (-89.5889864, 40.6936488, srid=4326)
+    center_point = Point (settings.DEFAULT_LON, settings.DEFAULT_LAT, srid=4326)
     paginate_by = 5
     queryset = Hotspot.objects.filter (geometry__distance_lte=(center_point, D(mi=20))).select_related (depth=2)
     template_name = "wifi/list.html"
@@ -152,7 +182,7 @@ class HotspotListView (ListView):
 
 class HotspotCityView (ListView):
     paginate_by = 5
-    template_name = "wifi/list.html"
+    template_name = "wifi/city.html"
 
     def get_queryset (self):
         city_id = self.kwargs.get ("city_id")
@@ -161,7 +191,7 @@ class HotspotCityView (ListView):
 
     def get_context_data (self, **kwargs):
         context = super (HotspotCityView, self).get_context_data (**kwargs)
-        google_map = get_google_hotspot_map (context["object_list"])
+        google_map = get_google_hotspot_map (context["object_list"], zoom=12)
         context["google_map"] = google_map
         city_id = self.kwargs.get ("city_id")
         city = get_object_or_404 (City, id=city_id)
@@ -174,7 +204,7 @@ class HotspotCityView (ListView):
 class HotspotTaggedView (ListView):
     template_name = "wifi/tagged.html"
     paginate_by = 5
-    center_point = Point (-89.5889864, 40.6936488, srid=4326)
+    center_point = Point (settings.DEFAULT_LON, settings.DEFAULT_LAT, srid=4326)
 
     def get_queryset (self):
         tag_slug = self.kwargs.get ("tag_slug")

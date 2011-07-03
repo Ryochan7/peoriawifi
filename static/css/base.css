@@ -34,13 +34,20 @@ body {
 	width: 480px;
 }
 
+#search_form ul.errorlist {
+	color: #FF0000;
+	float: none;
+	position: absolute;
+	top: 14px;
+}
+
+#search_form ul.errorlist li {
+	float: none;
+}
+
 #search_form ul li {
 	float: left;
 }
-
-/*#search_form ul + li {
-	
-}*/
 
 #search_form ul li label[for="id_search"] {
 	font-size: 16px;
@@ -93,8 +100,10 @@ body {
 	float: left;
 	width: 100px;
 	margin: 0px auto;
-	border-left: 1px solid #FFFFFF;
-	border-right: 1px solid #000000;	
+	/*border-left: 1px solid #FFFFFF;
+	border-right: 1px solid #000000;*/
+	border-left: 1px solid #C6E2F7;
+	border-right: 1px solid #C9D6E0;
 }
 
 
@@ -128,6 +137,23 @@ body {
 
 #sidebar ul li {
 	margin-bottom: 4px;
+}
+
+#featured_spot {
+	margin-left: 10px;
+}
+
+#featured_spot .featured {
+	display: block;
+	font-size: 1.2em;
+}
+
+#featured_spot .featured a {
+	text-decoration: none;
+}
+
+#featured_spot .hotspot_image {
+	margin-top: 10px;
 }
 
 #content {
