@@ -327,6 +327,14 @@ class HotspotAddView (CreateView):
     form_class = HotspotAddForm
     model = Hotspot
     template_name = "wifi/add.html"
+    
+    def get_form_kwargs (self):
+        self.object = Hotspot (status=Hotspot.REQUIRES_MODERATION)
+        if self.request.user.is_superuser:
+            self.object.status = Hotspot.PUBLISHED
+
+        kwargs = super (HotspotAddView, self).get_form_kwargs ()
+        return kwargs
 
     def get_context_data (self, **kwargs):
         context = super (HotspotAddView, self).get_context_data (**kwargs)

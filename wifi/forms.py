@@ -63,7 +63,7 @@ class HotspotAdminForm (forms.ModelForm):
         
         if self._errors.get ("address", None):
             logging.debug ("Address error on {0}".format (address))
-        else:
+        elif temp_point:
             self.cleaned_data["geometry"] = Point (temp_point[1][1], temp_point[1][0])
         
         return self.cleaned_data
