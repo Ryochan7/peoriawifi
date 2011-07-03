@@ -1,6 +1,14 @@
 {% load thumbnail %}
 <script type="text/javascript">
     info_windows = function () {
+
+    /*var hotspot_map_center = new GIcon (G_DEFAULT_ICON);
+    hotspot_map_center.image = "http://maps.google.com/mapfiles/kml/pal3/icon56.png";
+    hotspot_map_center.iconSize = new GSize (32, 32);
+    var map_marker_center = new GMarker (bounds.getCenter (), {icon: hotspot_map_center});
+
+    geodjango.map.addOverlay (map_marker_center);*/
+
     {% for hotspot in hotspot_list %}
         geodjango.map_marker{{ forloop.counter }}.bindInfoWindowHtml ("{% spaceless %}
 

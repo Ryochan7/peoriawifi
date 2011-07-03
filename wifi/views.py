@@ -38,6 +38,10 @@ def get_google_hotspot_map (hotspots, zoom=None):
         center = hotspots[0].geometry.get_coords ()
         zoom = zoom if zoom else 15
 
+    """center_icon = GIcon ("hotspot_map_center", "http://maps.google.com/mapfiles/kml/pal3/icon56.png", iconsize=(32, 32))
+    center_map = GMarker (center, icon=center_icon)
+    markers.append (center_map)"""
+
     kwargs = {
         "center": center,
         "markers": markers,
