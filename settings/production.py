@@ -16,3 +16,5 @@ MEDIA_URL = "http://peoriawifi.ryochan7.com/media/"
 STATIC_URL = "/static/"
 ADMIN_MEDIA_PREFIX = "/static/admin/"
 
+ANALYTICS = True
+

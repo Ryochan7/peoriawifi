@@ -117,6 +117,7 @@ MIDDLEWARE_CLASSES = (
 TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + (
     "django.core.context_processors.request",
     "wifi.context_processors.featured_cities",
+    "context_processors.site_context",
 )
 
 ROOT_URLCONF = 'peoriawifi.urls'
@@ -181,4 +182,5 @@ CACHES = {
     }
 }
 
+ANALYTICS = False
 

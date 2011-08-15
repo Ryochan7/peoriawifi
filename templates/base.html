@@ -19,6 +19,9 @@
 {% endblock %}
 
 {% block extra_js %}{% endblock %}
+{% if ANALYTICS %}
+    {% include "analytics/base.html" %}
+{% endif %}
 </head>
 
 {% block body %}
