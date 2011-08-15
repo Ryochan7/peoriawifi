@@ -9,10 +9,11 @@
 
         <p class="hotspot_image">
         {% thumbnail hotspot.source_image "70x70" crop="center" as im %}
+        {% if im %}
             <img src="{{ im.url }}" alt="{{ hotspot.name }} image" class="hotspot_image" />
-        {% empty %}
+        {% else %}
             <img src="{{ STATIC_URL }}images/wifi.png" alt="hotspot image" class="hotspot_image" />
-        {% endthumbnail %}
+        {% endif %}
         </p>
 
         <p class="address">{{ hotspot.address }}</p>

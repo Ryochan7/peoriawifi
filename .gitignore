@@ -6,5 +6,8 @@ dist/
 local_settings.py
 media/cache/
 media/hotspot_images/
+site_static/*
+!site_static/blank.txt
+settings/secrets.py
 *.*~
 

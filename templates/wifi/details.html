@@ -29,10 +29,11 @@
     <div id="info">
         <p>{% spaceless %}
         {% thumbnail hotspot.source_image "100x100" crop="center" as im %}
+        {% if im %}
             <img id="hotspot_image" src="{{ im.url }}" alt="{{ hotspot.name }} image" class="hotspot_image" />
-        {% empty %}
+        {% else %}
             <img id="hotspot_image" src="{{ STATIC_URL }}images/wifi.png" alt="hotspot image" class="hotspot_image" />
-        {% endthumbnail %}
+        {% endif %}
         {% endspaceless %}</p>
 
         <p class="address">Address: {{ hotspot.address }}</p>

@@ -5,12 +5,16 @@ django-taggit
 django-taggit-templatetags
 geopy
 PIL
-sorl-thumbnail
-pylibmc
+easy-thumbnails
+#sorl-thumbnail
+#pylibmc
+python-memcache
 psycopg2
 #ligeos
 #Python_GDAL
 #django-extensions
 #MySQL-python
 #django-debug-toolbar
+django-selectable
+django-compress
 

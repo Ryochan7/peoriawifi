@@ -4,10 +4,14 @@ from geopy import geocoders
 from geopy.geocoders.google import GQueryError
 from django import forms
 from django.contrib.gis.geos import Point
+from selectable.forms.widgets import AutoCompleteSelectWidget
 from wifi.models import Hotspot
+from wifi.lookups import CityLookup
 from wifi.conf import settings
 
-google_re = re.compile (r"^(?P<address>[\w ]+)(, )?(?P<city>\w+), (?P<state>\w+)(?: )?(?P<zip>\d+)?, (?P<country>\w+)")
+google_re = re.compile (
+    r"^(?P<address>[\w ]+)(, )?(?P<landmark>[\w ]+(, ))?(?P<city>\w+), (?P<state>\w+)(?: )?(?P<zip>\d+)?, (?P<country>\w+)"
+)
 logger = logging.getLogger ("wifi.forms")
 accepted_zips = ["61601", "61602", "61603", "61604", "61605", "61606", "61607",
     "61612", "61613", "61614", "61615", "61625", "61629", "61630", "61633",
@@ -18,6 +22,9 @@ accepted_cities = ["peoria, il", "peoria, illinois"]
 class HotspotAdminForm (forms.ModelForm):
     class Meta (object):
         model = Hotspot
+        widgets = {
+            "in_city": AutoCompleteSelectWidget(lookup_class=CityLookup)
+        }
 
     def clean (self):
         temp_point = None
