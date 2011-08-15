@@ -52,10 +52,11 @@ def get_google_address_info (search):
     temp_point = None
     CACHE_TIMEOUT = 3600
 
+    search = search.replace (" ", "-")
     if cache.get (search):
         data = cache.get (search)
     else:    
-        g = geocoders.Google (api_key=settings.settings.GOOGLE_MAPS_API_KEY)
+        g = geocoders.Google (api_key=settings.GOOGLE_MAPS_API_KEY)
         try:
             temp_point = g.geocode (search)
         except ValueError as exception:
@@ -66,8 +67,7 @@ def get_google_address_info (search):
             if temp_point:
                 center_point = Point (temp_point[1][1], temp_point[1][0])
                 data = center_point
-                cache.set (search.replace (" ", "-"),
-                    data, CACHE_TIMEOUT)
+                cache.set (search, data, CACHE_TIMEOUT)
 
     return data
 
@@ -95,7 +95,7 @@ class FilteredView (ListView):
 
 class WifiIndexView (ListView):
     template_name = "index.html"
-    paginate_by = 2
+    paginate_by = 5
     center_point = Point (settings.DEFAULT_LON, settings.DEFAULT_LAT, srid=4326)
 
     def get_queryset (self):

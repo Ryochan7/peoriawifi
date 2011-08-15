@@ -4,8 +4,8 @@
 build/
 dist/
 local_settings.py
-media/cache/
-media/hotspot_images/
+media/*
+!media/blank.txt
 site_static/*
 !site_static/blank.txt
 settings/secrets.py
