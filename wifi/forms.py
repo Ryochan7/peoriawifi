@@ -4,9 +4,9 @@ from geopy import geocoders
 from geopy.geocoders.google import GQueryError
 from django import forms
 from django.contrib.gis.geos import Point
-from selectable.forms.widgets import AutoCompleteSelectWidget
+#from selectable.forms.widgets import AutoCompleteSelectWidget
 from wifi.models import Hotspot
-from wifi.lookups import CityLookup
+#from wifi.lookups import CityLookup
 from wifi.conf import settings
 
 google_re = re.compile (
@@ -22,9 +22,9 @@ accepted_cities = ["peoria, il", "peoria, illinois"]
 class HotspotAdminForm (forms.ModelForm):
     class Meta (object):
         model = Hotspot
-        widgets = {
-            "in_city": AutoCompleteSelectWidget(lookup_class=CityLookup)
-        }
+        #widgets = {
+        #    "in_city": AutoCompleteSelectWidget(lookup_class=CityLookup)
+        #}
 
     def clean (self):
         temp_point = None
