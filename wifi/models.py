@@ -5,7 +5,6 @@ from django.core import urlresolvers
 from django.conf import settings
  
 from django.contrib.gis.db import models
-from sorl.thumbnail import ImageField
 from taggit.managers import TaggableManager
 from datetime import datetime
 
@@ -55,7 +54,7 @@ class Hotspot (models.Model):
     description = models.TextField ()
     status = models.IntegerField (default=UNPUBLISHED, choices=STATUS_CHOICES, db_index=True)
     in_city = models.ForeignKey (City)
-    source_image = ImageField (upload_to="hotspot_images", max_length=256, blank=True)
+    source_image = models.ImageField (upload_to="hotspot_images", max_length=256, blank=True)
     date_added = models.DateTimeField (default=datetime.now)
     google_cid = models.CharField (max_length=20, blank=True, help_text="Enter the cid of the business' page from Google Places")
     tags = TaggableManager ()

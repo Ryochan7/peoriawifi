@@ -144,7 +144,6 @@ INSTALLED_APPS = (
     "taggit",
     "taggit_templatetags",
     "pagination",
-    "filer",
     "easy_thumbnails",
     #"selectable",
     "wifi",

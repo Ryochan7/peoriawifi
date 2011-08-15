@@ -21,7 +21,6 @@ urlpatterns = patterns('',
     #(r'^admin/filebrowser/', include('filebrowser.urls')),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    (r'^selectable/', include('selectable.urls')),
     url(r"^$", WifiIndexView.as_view (), name="home"),
     url(r"^search/$", HotspotSearchView.as_view (), name="wifi_search"),
     url(r"^filtered/$", HotspotFilteredView.as_view (), name="wifi_filtered_search"),
